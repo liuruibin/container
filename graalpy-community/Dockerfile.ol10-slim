@@ -1,9 +1,8 @@
 # LICENSE UPL 1.0
 #
 # Copyright (c) 2023 Oracle and/or its affiliates.
-#do
 
-ARG BASE_IMAGE=container-registry.oracle.com/os/oraclelinux:9
+ARG BASE_IMAGE=container-registry.oracle.com/os/oraclelinux:10-slim
 
 FROM ${BASE_IMAGE}
 
@@ -25,8 +24,8 @@ ENV LANG=en_US.UTF-8 \
 
 RUN set -eux \
     && echo "$TEMP_REGION" > /etc/dnf/vars/ociregion \
-    && dnf install oraclelinux-release-el9 \
-    && dnf install -y curl tar unzip gzip zlib openssl-devel gcc gcc-c++ make patch glibc-langpack-en libxcrypt-compat \
+    && microdnf install oraclelinux-release-el10 \
+    && microdnf install -y curl tar unzip gzip zlib openssl-devel gcc gcc-c++ make patch glibc-langpack-en libxcrypt-compat \
     && echo "" > /etc/dnf/vars/ociregion \
     && rm -rf /var/cache/dnf
 
@@ -34,8 +33,7 @@ RUN set -eux \
     && mkdir -p /opt/graalpy-$GRAALVM_VERSION \
     && curl --fail --silent --location --retry 3 $GRAALVM_PKG | gunzip | tar x -C /opt/graalpy-$GRAALVM_VERSION --strip-components=1
 
-
-RUN graalpy -m venv graalenv \ 
+RUN graalpy -m venv graalenv \
     && echo "source graalenv/bin/activate" >> ~/.bashrc
 
-CMD ["graalpy"]
+CMD [ "graalpy"]

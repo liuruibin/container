@@ -3,7 +3,7 @@
 # Copyright (c) 2023 Oracle and/or its affiliates.
 #do
 
-ARG BASE_IMAGE=container-registry.oracle.com/os/oraclelinux:9
+ARG BASE_IMAGE=container-registry.oracle.com/os/oraclelinux:10
 
 FROM ${BASE_IMAGE}
 
@@ -25,7 +25,7 @@ ENV LANG=en_US.UTF-8 \
 
 RUN set -eux \
     && echo "$TEMP_REGION" > /etc/dnf/vars/ociregion \
-    && dnf install oraclelinux-release-el9 \
+    && dnf install oraclelinux-release-el10 \
     && dnf install -y curl tar unzip gzip zlib openssl-devel gcc gcc-c++ make patch glibc-langpack-en libxcrypt-compat \
     && echo "" > /etc/dnf/vars/ociregion \
     && rm -rf /var/cache/dnf
